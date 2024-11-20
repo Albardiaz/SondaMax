@@ -1,0 +1,45 @@
+[[inputs.file]]
+  files = ["C:\\Karate\\karate-robot\\target\\karate-reports\\output.json"]
+  data_format = "json"
+  name_override = "karate_sondanavegacion"
+  interval = "15s"
+  tag_keys = ["result", "prefixedPath", "name", "step", "stepnum", "status", "resultDate", "duration", "failedCount", "id", "passedCount"]
+  #json_time_key = "date_navi"
+  #json_time_format = "unix"
+  [inputs.file.tags]
+    group = "INFRA"
+    service = "Navigation"
+    url = "http://nhypmadrid01.uee.local/"
+
+[[processors.enum]]
+  [[processors.enum.mapping]]
+    tag = "result"
+    dest = "result_code"
+    [processors.enum.mapping.value_mappings]
+      "passed" = 0
+      "failed" = 1
+
+  [[processors.enum.mapping]]
+    tag = "status"
+    dest = "status_code"
+    
+    [processors.enum.mapping.value_mappings]
+      "passed" = 0
+      "failed" = 1
+
+[[processors.converter]]
+  [processors.converter.tags]
+    integer = ["result_code", "status_code", "duration", "failedCount", "id", "passedCount"]
+    string = ["resultDate"]
+
+[[processors.regex]]
+  namepass = ["karate_sondanavegacion"]
+  [[processors.regex.fields]]
+    key = "resultDate"
+    pattern = "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}) a. m."
+    replacement = "${1}AM"
+  
+  [[processors.regex.fields]]
+    key = "resultDate"
+    pattern = "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}) p. m."
+    replacement = "${1}PM"

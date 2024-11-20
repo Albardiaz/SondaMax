@@ -1,0 +1,12 @@
+[[inputs.exec]]
+  commands = ["C:\\\\Karate\\\\karate-robot\\\\ejecutor.bat"]
+  data_format = "json"
+  name_override = "karate_sondanavegacion"
+  interval = "5m"
+  tag_keys = ["result", "prefixedPath", "name", "step", "stepnum", "status"]
+  #json_time_key = "date_navi"
+  #json_time_format = "unix"
+  timeout = "290s"
+  [inputs.exec.tags]
+    group = "INFRA"
+    service = "Navigation"
