@@ -1,5 +1,5 @@
 # Ruta del archivo
-$filePath = "C:\Users\jbello5\GitHub_Albardiaz\SondaMax\filesOldSonda\jsonScripts\PowerAutomate_ebsapl.json"
+$filePath = "C:\M360\Power Automate\PowerAutomate_Aplicacion_M3.json"
 
 # Obtener la fecha de modificación del archivo
 $fileInfo = Get-Item $filePath
@@ -15,8 +15,7 @@ $timeDifference = ($currentTime - $lastModified).TotalMinutes
 if ($timeDifference -le 20) {
     # Leer y imprimir el contenido del archivo
     Get-Content $filePath
-}
-else {
+} else {
     # Imprimir un mensaje de que el archivo no ha sido modificado recientemente
     Write-Output "{}"  # Devuelve un JSON vacío para que Telegraf no falle
 }
