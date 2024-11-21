@@ -13,20 +13,15 @@ $timeDifference = ($currentTime - $lastModified).TotalMinutes
 
 # Verificar si la diferencia es menor o igual a 20 minutos
 if ($timeDifference -le 20) {
-    # Step 1: Read the JSON file
-    # Get-Content $filePath
-    # $jsonContent = Get-Content -Path $filePath -Raw | ConvertFrom-Json
-    $jsonContent = Get-Content $filePath
-    # Step 2: Change the date format
-    foreach ($item in $jsonContent) {
-        $item
-         #if ($item.resultDate -ne $null) {
-            # Change the date format (example: from 'yyyy-MM-dd' to 'dd/MM/yyyy')
-         #   $item.resultDate = [datetime]::Parse($item.resultDate).ToString("yyyy-MM-dd HH:mm:ss")
-        }
+    $jsonContent = Get-Content -Path $filePath -Encoding UTF8 | ConvertFrom-Json
+    # Change the date format
+    foreach ($item in $jsonContent) {           
+        #$item.resultDate
+        $item.resultDate = $item.resultDate -replace "\u00A0", " "    
+        #$item.resultDate
     }
-    # Step 3: Save the updated JSON back to the file
-    $jsonContent | ConvertTo-Json -Depth 10
+    $jsonObject = $jsonContent | ConvertTo-Json
+    $jsonObject
 }
 else {
     # Imprimir un mensaje de que el archivo no ha sido modificado recientemente
